@@ -8,11 +8,11 @@ class SearchNGO {
     this.ngoRepository = ngoRepository;
   }
 
-  async execute({ page, pageSize }: Input): Promise<Output> {
+  async execute({ page, pageSize, filter }: Input): Promise<Output> {
     const { ngos, total, totalNGOs } = await this.ngoRepository.paginate({
       page,
       size: pageSize,
-      filter: {},
+      filter,
     });
 
     return {
@@ -27,7 +27,10 @@ class SearchNGO {
 
 type Input = {
   page: number;
-  pageSize: 2;
+  pageSize: number;
+  filter?: {
+    category?: string;
+  };
 };
 
 type Output = {

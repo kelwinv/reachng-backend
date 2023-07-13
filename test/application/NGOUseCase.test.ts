@@ -5,45 +5,97 @@ import { NGOInMemoryRepository } from "../../src/Infra/repository/memory/NGOInMe
 describe("NGOUseCase", () => {
   const ngoRepository = new NGOInMemoryRepository();
   beforeAll(() => {
-    const ngos = [
+    const ngos: Array<typeof NGO.prototype> = [
       {
         id: "1",
-        name: "ONG A",
-        description: "Descrição da ONG A",
-        address: "Endereço da ONG A",
-        contact: "Contato da ONG A",
+        name: "Helping Hands",
+        mission:
+          "Our mission is to provide support to underprivileged communities.",
+        projects: ["Community Development", "Education"],
+        address: "123 Main Street, City",
+        category: "Social Services",
+        contact: [
+          { type: "Email", value: "info@helpinghands.org" },
+          { type: "Phone", value: "123-456-7890" },
+        ],
+        specificNeeds: ["School supplies", "Volunteers"],
+        externalPaymentMethod: {
+          type: "PayPal",
+          value: "paypal@helpinghands.org",
+        },
       },
       {
         id: "2",
-        name: "ONG B",
-        description: "Descrição da ONG B",
-        address: "Endereço da ONG B",
-        contact: "Contato da ONG B",
+        name: "Green Earth",
+        mission:
+          "We aim to protect the environment and promote sustainable practices.",
+        projects: ["Environmental Conservation", "Climate Action"],
+        address: "456 Park Avenue, City",
+        category: "Social Services",
+        contact: [
+          { type: "Email", value: "info@greenearth.org" },
+          { type: "Phone", value: "987-654-3210" },
+        ],
+        specificNeeds: ["Recycling programs", "Tree planting"],
+        externalPaymentMethod: {
+          type: "Bank Transfer",
+          value: "Account number: XXXXXXXX",
+        },
       },
       {
         id: "3",
-        name: "ONG C",
-        description: "Descrição da ONG C",
-        address: "Endereço da ONG C",
-        contact: "Contato da ONG C",
+        name: "Health Aid",
+        mission:
+          "We strive to improve access to healthcare for marginalized communities.",
+        projects: ["Healthcare", "Medical Supplies"],
+        address: "789 Elm Street, City",
+        category: "Health",
+        contact: [
+          { type: "Email", value: "info@healthaid.org" },
+          { type: "Phone", value: "555-123-4567" },
+        ],
+        specificNeeds: ["Medicines", "Medical equipment"],
+        externalPaymentMethod: {
+          type: "Credit Card",
+          value: "Visa ending in 1234",
+        },
       },
       {
         id: "4",
-        name: "ONG D",
-        description: "Descrição da ONG D",
-        address: "Endereço da ONG D",
-        contact: "Contato da ONG D",
+        name: "Education for All",
+        mission:
+          "Our mission is to provide quality education to underprivileged children.",
+        projects: ["Education", "School Infrastructure"],
+        address: "321 Oak Road, City",
+        category: "Education",
+        contact: [
+          { type: "Email", value: "info@educationforall.org" },
+          { type: "Phone", value: "222-333-4444" },
+        ],
+        specificNeeds: ["Books", "School furniture"],
+        externalPaymentMethod: {
+          type: "Cash",
+          value: "Physical donations only",
+        },
       },
       {
         id: "5",
-        name: "ONG E",
-        description: "Descrição da ONG E",
-        address: "Endereço da ONG E",
-        contact: "Contato da ONG E",
+        name: "Animal Rescue",
+        mission:
+          "We are dedicated to rescuing and rehabilitating animals in need.",
+        projects: ["Animal Welfare", "Pet Adoption"],
+        address: "555 Pine Avenue, City",
+        category: "Animals",
+        contact: [
+          { type: "Email", value: "info@animalrescue.org" },
+          { type: "Phone", value: "999-888-7777" },
+        ],
+        specificNeeds: ["Pet food", "Medical supplies"],
+        externalPaymentMethod: { type: "Venmo", value: "@animalrescue" },
       },
     ];
 
-    ngoRepository.ngos = ngos;
+    ngoRepository.NGOs = ngos;
   });
 
   test("should be paginated results of NGO", async () => {
@@ -68,5 +120,25 @@ describe("NGOUseCase", () => {
     expect(output2.ngos).toHaveLength(1);
     expect(output2.page).toBe(3);
     expect(output2.pageSize).toBe(2);
+  });
+
+  test("should be paginated results with category of NGO", async () => {
+    const page = 1;
+    const pageSize = 10;
+    const searchNGO = new SearchNGO(ngoRepository);
+    const output = await searchNGO.execute({
+      page,
+      pageSize,
+      filter: { category: "Social Services" },
+    });
+
+    const [NGO1, NGO2] = output.ngos;
+
+    expect(output.ngos).toHaveLength(2);
+    expect(output.page).toBe(1);
+    expect(output.totalPages).toBe(1);
+
+    expect(NGO1.category).toBe("Social Services");
+    expect(NGO2.category).toBe("Social Services");
   });
 });

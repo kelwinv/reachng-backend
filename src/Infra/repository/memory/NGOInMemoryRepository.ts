@@ -6,30 +6,53 @@ import {
 import { NGO } from "../../../Domains/Entities/NGO";
 
 class NGOInMemoryRepository implements NGORepository {
-  public ngos = [
+  public NGOs: Array<typeof NGO.prototype> = [
     {
       id: "1",
       name: "ONG A",
-      description: "Descrição da ONG A",
+      mission: "Descrição da ONG A",
+      projects: ["ajudando crianças"],
       address: "Endereço da ONG A",
-      contact: "Contato da ONG A",
+      category: "ambiente",
+      contact: [
+        {
+          type: "email",
+          value: "ong@gmail.com",
+        },
+      ],
     },
   ];
-  paginate({ page, size }: paginateInput): Promise<paginateOutput> {
+
+  paginate({ page, size, filter }: paginateInput): Promise<paginateOutput> {
     const startIndex = (page - 1) * size;
     const endIndex = startIndex + size;
-    const paginatedNGOsData = this.ngos.slice(startIndex, endIndex);
-    const totalNGOs = this.ngos.length;
+    let paginatedNGOsData = this.NGOs.slice(startIndex, endIndex);
+    if (filter?.category) {
+      paginatedNGOsData = paginatedNGOsData.filter(
+        (ong) => ong.category === filter.category,
+      );
+    }
+    const totalNGOs = this.NGOs.length;
     const totalPages = Math.ceil(totalNGOs / size);
 
-    const ngosData = paginatedNGOsData.map(
-      ({ id, name, address, contact, description }) =>
-        new NGO(id, name, description, address, contact),
+    const NGOsData = paginatedNGOsData.map(
+      (ngo) =>
+        new NGO(
+          ngo.id,
+          ngo.name,
+          ngo.mission,
+          ngo.projects,
+          ngo.address,
+          ngo.category,
+          ngo.contact,
+          ngo?.specificNeeds,
+          ngo?.externalPaymentMethod,
+        ),
     );
 
     return new Promise((resolve) => {
       resolve({
-        ngos: ngosData,
+        ngos: NGOsData,
         total: totalPages,
         totalNGOs: totalNGOs,
       });

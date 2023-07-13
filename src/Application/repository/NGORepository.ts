@@ -7,7 +7,9 @@ interface NGORepository {
 export type paginateInput = {
   page: number;
   size: number;
-  filter: object;
+  filter?: {
+    category?: string;
+  };
 };
 
 export type paginateOutput = {
