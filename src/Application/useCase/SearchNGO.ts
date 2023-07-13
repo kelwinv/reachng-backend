@@ -1,5 +1,6 @@
+import { Category } from "../../Domains/Entities/Category";
 import { NGO } from "../../Domains/Entities/NGO";
-import { NGORepository } from "../repository/NGORepository";
+import { NGORepository } from "../../Domains/repository/NGORepository";
 
 class SearchNGO {
   ngoRepository: NGORepository;
@@ -12,7 +13,7 @@ class SearchNGO {
     const { ngos, total, totalNGOs } = await this.ngoRepository.paginate({
       page,
       size: pageSize,
-      filter,
+      filter: { category: filter?.category.name },
     });
 
     return {
@@ -29,7 +30,7 @@ type Input = {
   page: number;
   pageSize: number;
   filter?: {
-    category?: string;
+    category: Category;
   };
 };
 

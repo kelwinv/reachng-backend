@@ -1,3 +1,5 @@
+import { Category } from "./Category";
+
 class NGO {
   constructor(
     readonly id: string,
@@ -5,7 +7,7 @@ class NGO {
     readonly mission: string,
     readonly projects: string[],
     readonly address: string,
-    readonly category: string,
+    readonly category: Category,
     readonly contact: {
       type: string;
       value: string;
