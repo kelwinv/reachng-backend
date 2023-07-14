@@ -30,7 +30,7 @@ describe("SearchNGO", () => {
     ),
   ];
 
-  beforeAll(() => {
+  beforeAll(async () => {
     const ngos: NGO[] = [
       new NGO(
         "1",
@@ -109,7 +109,7 @@ describe("SearchNGO", () => {
       ),
     ];
 
-    ngoRepository.NGOs = ngos;
+    await ngoRepository.saveMany(ngos);
   });
 
   test("should be paginated results of NGO", async () => {

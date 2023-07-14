@@ -12,6 +12,10 @@ class NGOInMemoryRepository implements NGORepository {
     this.NGOs = [];
   }
 
+  async saveMany(input: NGO[]): Promise<void> {
+    this.NGOs.push(...input);
+  }
+
   paginate({ page, size, filter }: paginateInput): Promise<paginateOutput> {
     const startIndex = (page - 1) * size;
     const endIndex = startIndex + size;
