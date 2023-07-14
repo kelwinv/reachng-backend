@@ -1,6 +1,8 @@
 import { SearchNGO } from "../../../src/Application/useCase/SearchNGO";
 import { Category } from "../../../src/Domains/Entities/Category";
+import { Contact } from "../../../src/Domains/Entities/Contact";
 import { NGO } from "../../../src/Domains/Entities/NGO";
+import { PaymentMethod } from "../../../src/Domains/Entities/PaymentMethod";
 import { NGOInMemoryRepository } from "../../../src/Infra/repository/memory/NGOInMemoryRepository";
 
 describe("SearchNGO", () => {
@@ -33,20 +35,16 @@ describe("SearchNGO", () => {
       new NGO(
         "1",
         "Helping Hands",
-
         "Our mission is to provide support to underprivileged communities.",
         ["Community Development", "Education"],
         "123 Main Street, City",
         categories[0],
         [
-          { type: "Email", value: "info@helpinghands.org" },
-          { type: "Phone", value: "123-456-7890" },
+          new Contact("1", "Email", "info@helpinghands.org"),
+          new Contact("1", "Phone", "123-456-7890"),
         ],
         ["School supplies", "Volunteers"],
-        {
-          type: "PayPal",
-          value: "paypal@helpinghands.org",
-        },
+        new PaymentMethod("1", "PayPal", "paypal@helpinghands.org"),
       ),
       new NGO(
         "2",
@@ -57,14 +55,11 @@ describe("SearchNGO", () => {
         "456 Park Avenue, City",
         categories[0],
         [
-          { type: "Email", value: "info@greenearth.org" },
-          { type: "Phone", value: "987-654-3210" },
+          new Contact("3", "Email", "info@greenearth.org"),
+          new Contact("4", "Phone", "987-654-3210"),
         ],
         ["Recycling programs", "Tree planting"],
-        {
-          type: "Bank Transfer",
-          value: "Account number: XXXXXXXX",
-        },
+        new PaymentMethod("2", "Bank Transfer", "Account number: XXXXXXXX"),
       ),
       new NGO(
         "3",
@@ -75,14 +70,12 @@ describe("SearchNGO", () => {
         "789 Elm Street, City",
         categories[1],
         [
-          { type: "Email", value: "info@healthaid.org" },
-          { type: "Phone", value: "555-123-4567" },
+          new Contact("5", "Email", "info@healthaid.org"),
+          new Contact("6", "Phone", "555-123-4567"),
         ],
         ["Medicines", "Medical equipment"],
-        {
-          type: "Credit Card",
-          value: "Visa ending in 1234",
-        },
+
+        new PaymentMethod("3", "Credit Card", "Visa ending in 1234"),
       ),
       new NGO(
         "4",
@@ -93,14 +86,11 @@ describe("SearchNGO", () => {
         "321 Oak Road, City",
         categories[2],
         [
-          { type: "Email", value: "info@educationforall.org" },
-          { type: "Phone", value: "222-333-4444" },
+          new Contact("7", "Email", "info@educationforall.org"),
+          new Contact("8", "Phone", "222-333-4444"),
         ],
         ["Books", "School furniture"],
-        {
-          type: "Cash",
-          value: "Physical donations only",
-        },
+        new PaymentMethod("4", "Cash", "Physical donations only"),
       ),
       new NGO(
         "5",
@@ -111,11 +101,11 @@ describe("SearchNGO", () => {
         "555 Pine Avenue, City",
         categories[3],
         [
-          { type: "Email", value: "info@animalrescue.org" },
-          { type: "Phone", value: "999-888-7777" },
+          new Contact("1", "Email", "info@animalrescue.org"),
+          new Contact("1", "Phone", "999-888-7777"),
         ],
         ["Pet food", "Medical supplies"],
-        { type: "Venmo", value: "@animalrescue" },
+        new PaymentMethod("5", "Venmo", "@animalrescue"),
       ),
     ];
 
