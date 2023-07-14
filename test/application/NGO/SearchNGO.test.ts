@@ -1,9 +1,9 @@
-import { SearchNGO } from "../../../src/Application/useCase/SearchNGO";
-import { Category } from "../../../src/Domains/Entities/Category";
-import { Contact } from "../../../src/Domains/Entities/Contact";
-import { NGO } from "../../../src/Domains/Entities/NGO";
-import { PaymentMethod } from "../../../src/Domains/Entities/PaymentMethod";
-import { NGOInMemoryRepository } from "../../../src/Infra/repository/memory/NGOInMemoryRepository";
+import { SearchNGO } from "Application/useCase/SearchNGO";
+import { Category } from "Domains/Entities/Category";
+import { Contact } from "Domains/Entities/Contact";
+import { NGO } from "Domains/Entities/NGO";
+import { PaymentMethod } from "Domains/Entities/PaymentMethod";
+import { NGOInMemoryRepository } from "Infra/repository/memory/NGOInMemoryRepository";
 
 describe("SearchNGO", () => {
   const ngoRepository = new NGOInMemoryRepository();

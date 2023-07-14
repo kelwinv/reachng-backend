@@ -2,8 +2,8 @@ import {
   NGORepository,
   paginateInput,
   paginateOutput,
-} from "../../../Domains/repository/NGORepository";
-import { NGO } from "../../../Domains/Entities/NGO";
+} from "Domains/repository/NGORepository";
+import { NGO } from "Domains/Entities/NGO";
 
 class NGOInMemoryRepository implements NGORepository {
   NGOs: NGO[];

@@ -13,6 +13,7 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "baseUrl": "src",
   },
   "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules"]
