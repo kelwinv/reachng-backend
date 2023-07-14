@@ -45,8 +45,8 @@ describe("SearchNGO", () => {
         "123 Main Street, City",
         categories[0],
         [
-          new Contact("1", "Email", "info@helpinghands.org"),
-          new Contact("2", "Phone", "123-456-7890"),
+          new Contact("1", "mail", "info@helpinghands.org"),
+          new Contact("2", "phone", "123-456-7890"),
         ],
         ["School supplies", "Volunteers"],
         new PaymentMethod("1", "PayPal", "paypal@helpinghands.org"),
@@ -60,8 +60,8 @@ describe("SearchNGO", () => {
         "456 Park Avenue, City",
         categories[0],
         [
-          new Contact("3", "Email", "info@greenearth.org"),
-          new Contact("4", "Phone", "987-654-3210"),
+          new Contact("3", "mail", "info@greenearth.org"),
+          new Contact("4", "phone", "987-654-3210"),
         ],
         ["Recycling programs", "Tree planting"],
         new PaymentMethod("2", "Bank Transfer", "Account number: XXXXXXXX"),
@@ -75,8 +75,8 @@ describe("SearchNGO", () => {
         "789 Elm Street, City",
         categories[1],
         [
-          new Contact("5", "Email", "info@healthaid.org"),
-          new Contact("6", "Phone", "555-123-4567"),
+          new Contact("5", "mail", "info@healthaid.org"),
+          new Contact("6", "phone", "555-123-4567"),
         ],
         ["Medicines", "Medical equipment"],
 
@@ -91,8 +91,8 @@ describe("SearchNGO", () => {
         "321 Oak Road, City",
         categories[2],
         [
-          new Contact("7", "Email", "info@educationforall.org"),
-          new Contact("8", "Phone", "222-333-4444"),
+          new Contact("7", "mail", "info@educationforall.org"),
+          new Contact("8", "phone", "222-333-4444"),
         ],
         ["Books", "School furniture"],
         new PaymentMethod("4", "Cash", "Physical donations only"),
@@ -106,8 +106,8 @@ describe("SearchNGO", () => {
         "555 Pine Avenue, City",
         categories[3],
         [
-          new Contact("10", "Email", "info@animalrescue.org"),
-          new Contact("11", "Phone", "999-888-7777"),
+          new Contact("10", "mail", "info@animalrescue.org"),
+          new Contact("11", "phone", "999-888-7777"),
         ],
         ["Pet food", "Medical supplies"],
         new PaymentMethod("5", "Venmo", "@animalrescue"),
