@@ -3,6 +3,7 @@ import { NGO } from "Domains/Entities/NGO";
 interface NGORepository {
   paginate(input: paginateInput): Promise<paginateOutput>;
   saveMany(input: NGO[]): Promise<void>;
+  deleteMany(input: NGO[]): Promise<void>;
 }
 
 export type paginateInput = {

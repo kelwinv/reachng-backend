@@ -6,32 +6,37 @@ import { PaymentMethod } from "Domains/Entities/PaymentMethod";
 import { NGOInMemoryRepository } from "Infra/repository/memory/NGOInMemoryRepository";
 
 describe("SearchNGO", () => {
-  const ngoRepository = new NGOInMemoryRepository();
-  const categories: Category[] = [
-    new Category(
-      "1",
-      "socialServices",
-      "NGOs providing assistance and support to individuals and communities in need.",
-    ),
-    new Category(
-      "2",
-      "Health",
-      "NGOs focused on promoting and improving public health.",
-    ),
-    new Category(
-      "3",
-      "Education",
-      "NGOs dedicated to improving access to quality education for all individuals.",
-    ),
-    new Category(
-      "4",
-      "Animals",
-      "NGOs working towards animal welfare, protection, and conservation.",
-    ),
-  ];
+  let ngoRepository: NGOInMemoryRepository;
+  let categories: Category[];
+  let ngos: NGO[];
 
   beforeAll(async () => {
-    const ngos: NGO[] = [
+    ngoRepository = new NGOInMemoryRepository();
+
+    categories = [
+      new Category(
+        "1",
+        "socialServices",
+        "NGOs providing assistance and support to individuals and communities in need.",
+      ),
+      new Category(
+        "2",
+        "Health",
+        "NGOs focused on promoting and improving public health.",
+      ),
+      new Category(
+        "3",
+        "Education",
+        "NGOs dedicated to improving access to quality education for all individuals.",
+      ),
+      new Category(
+        "4",
+        "Animals",
+        "NGOs working towards animal welfare, protection, and conservation.",
+      ),
+    ];
+
+    ngos = [
       new NGO(
         "1",
         "Helping Hands",
@@ -41,7 +46,7 @@ describe("SearchNGO", () => {
         categories[0],
         [
           new Contact("1", "Email", "info@helpinghands.org"),
-          new Contact("1", "Phone", "123-456-7890"),
+          new Contact("2", "Phone", "123-456-7890"),
         ],
         ["School supplies", "Volunteers"],
         new PaymentMethod("1", "PayPal", "paypal@helpinghands.org"),
@@ -101,8 +106,8 @@ describe("SearchNGO", () => {
         "555 Pine Avenue, City",
         categories[3],
         [
-          new Contact("1", "Email", "info@animalrescue.org"),
-          new Contact("1", "Phone", "999-888-7777"),
+          new Contact("10", "Email", "info@animalrescue.org"),
+          new Contact("11", "Phone", "999-888-7777"),
         ],
         ["Pet food", "Medical supplies"],
         new PaymentMethod("5", "Venmo", "@animalrescue"),
@@ -128,17 +133,31 @@ describe("SearchNGO", () => {
     for (const ngo of output.ngos) {
       expect(ngo).toBeInstanceOf(NGO);
     }
+  });
 
-    const output2 = await searchNGO.execute({ page: 3, pageSize });
+  test("should return paginated results on different page", async () => {
+    const page = 3;
+    const pageSize = 2;
 
-    expect(output2.ngos).toHaveLength(1);
-    expect(output2.page).toBe(3);
-    expect(output2.pageSize).toBe(2);
+    const searchNGO = new SearchNGO(ngoRepository);
+
+    const output = await searchNGO.execute({ page, pageSize });
+
+    expect(output.ngos).toHaveLength(1);
+    expect(output.page).toBe(page);
+    expect(output.pageSize).toBe(pageSize);
+
+    for (const ngo of output.ngos) {
+      expect(ngo).toBeInstanceOf(NGO);
+    }
   });
 
   test("should be paginated results with category of NGO", async () => {
     const page = 1;
     const pageSize = 10;
+    const categoryFilter = categories[0];
+    const expectedNGOs = ngos.filter((ngo) => ngo.category === categoryFilter);
+
     const searchNGO = new SearchNGO(ngoRepository);
     const output = await searchNGO.execute({
       page,
@@ -146,13 +165,13 @@ describe("SearchNGO", () => {
       filter: { category: categories[0] },
     });
 
-    expect(output.ngos).toHaveLength(2);
-    expect(output.page).toBe(1);
+    expect(output.ngos).toEqual(expectedNGOs);
+    expect(output.page).toBe(page);
+    expect(output.pageSize).toBe(pageSize);
     expect(output.totalPages).toBe(1);
+  });
 
-    const [NGO1, NGO2] = output.ngos;
-
-    expect(NGO1.category).toBe(categories[0]);
-    expect(NGO2.category).toBe(categories[0]);
+  afterAll(async () => {
+    await ngoRepository.deleteMany(ngos);
   });
 });
