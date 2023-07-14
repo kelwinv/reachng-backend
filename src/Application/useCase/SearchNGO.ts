@@ -1,6 +1,6 @@
 import { Category } from "Domains/Entities/Category";
 import { NGO } from "Domains/Entities/NGO";
-import { NGORepository } from "Domains/repository/NGORepository";
+import { NGORepository } from "Application/repository/NGORepository";
 
 class SearchNGO {
   ngoRepository: NGORepository;
