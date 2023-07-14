@@ -1,4 +1,4 @@
-import { NGO } from "../Entities/NGO";
+import { NGO } from "Domains/Entities/NGO";
 
 interface NGORepository {
   paginate(input: paginateInput): Promise<paginateOutput>;

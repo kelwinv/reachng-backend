@@ -1,7 +1,7 @@
-import { SearchNGO } from "../../../src/Application/useCase/SearchNGO";
-import { Category } from "../../../src/Domains/Entities/Category";
-import { NGO } from "../../../src/Domains/Entities/NGO";
-import { NGOInMemoryRepository } from "../../../src/Infra/repository/memory/NGOInMemoryRepository";
+import { SearchNGO } from "Application/useCase/SearchNGO";
+import { Category } from "Domains/Entities/Category";
+import { NGO } from "Domains/Entities/NGO";
+import { NGOInMemoryRepository } from "Infra/repository/memory/NGOInMemoryRepository";
 
 describe("SearchNGO", () => {
   const ngoRepository = new NGOInMemoryRepository();
