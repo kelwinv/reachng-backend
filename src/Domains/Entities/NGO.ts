@@ -1,4 +1,6 @@
 import { Category } from "./Category";
+import { Contact } from "./Contact";
+import { PaymentMethod } from "./PaymentMethod";
 
 class NGO {
   constructor(
@@ -8,15 +10,9 @@ class NGO {
     readonly projects: string[],
     readonly address: string,
     readonly category: Category,
-    readonly contact: {
-      type: string;
-      value: string;
-    }[],
+    readonly contact: Contact[],
     readonly specificNeeds?: string[],
-    readonly externalPaymentMethod?: {
-      type: string;
-      value: string;
-    },
+    readonly externalPaymentMethod?: PaymentMethod,
   ) {}
 }
 
