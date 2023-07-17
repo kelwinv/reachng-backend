@@ -1,52 +1,55 @@
 import { SearchNGO } from "Application/useCase/SearchNGO";
 import { Category } from "Domains/Entities/Category";
+import { Contact } from "Domains/Entities/Contact";
 import { NGO } from "Domains/Entities/NGO";
+import { PaymentMethod } from "Domains/Entities/PaymentMethod";
 import { NGOInMemoryRepository } from "Infra/repository/memory/NGOInMemoryRepository";
 
 describe("SearchNGO", () => {
-  const ngoRepository = new NGOInMemoryRepository();
-  const categories: Category[] = [
-    new Category(
-      "1",
-      "socialServices",
-      "NGOs providing assistance and support to individuals and communities in need.",
-    ),
-    new Category(
-      "2",
-      "Health",
-      "NGOs focused on promoting and improving public health.",
-    ),
-    new Category(
-      "3",
-      "Education",
-      "NGOs dedicated to improving access to quality education for all individuals.",
-    ),
-    new Category(
-      "4",
-      "Animals",
-      "NGOs working towards animal welfare, protection, and conservation.",
-    ),
-  ];
+  let ngoRepository: NGOInMemoryRepository;
+  let categories: Category[];
+  let ngos: NGO[];
 
-  beforeAll(() => {
-    const ngos: NGO[] = [
+  beforeAll(async () => {
+    ngoRepository = new NGOInMemoryRepository();
+
+    categories = [
+      new Category(
+        "1",
+        "socialServices",
+        "NGOs providing assistance and support to individuals and communities in need.",
+      ),
+      new Category(
+        "2",
+        "Health",
+        "NGOs focused on promoting and improving public health.",
+      ),
+      new Category(
+        "3",
+        "Education",
+        "NGOs dedicated to improving access to quality education for all individuals.",
+      ),
+      new Category(
+        "4",
+        "Animals",
+        "NGOs working towards animal welfare, protection, and conservation.",
+      ),
+    ];
+
+    ngos = [
       new NGO(
         "1",
         "Helping Hands",
-
         "Our mission is to provide support to underprivileged communities.",
         ["Community Development", "Education"],
         "123 Main Street, City",
         categories[0],
         [
-          { type: "Email", value: "info@helpinghands.org" },
-          { type: "Phone", value: "123-456-7890" },
+          new Contact("1", "mail", "info@helpinghands.org"),
+          new Contact("2", "phone", "123-456-7890"),
         ],
         ["School supplies", "Volunteers"],
-        {
-          type: "PayPal",
-          value: "paypal@helpinghands.org",
-        },
+        new PaymentMethod("1", "PayPal", "paypal@helpinghands.org"),
       ),
       new NGO(
         "2",
@@ -57,14 +60,11 @@ describe("SearchNGO", () => {
         "456 Park Avenue, City",
         categories[0],
         [
-          { type: "Email", value: "info@greenearth.org" },
-          { type: "Phone", value: "987-654-3210" },
+          new Contact("3", "mail", "info@greenearth.org"),
+          new Contact("4", "phone", "987-654-3210"),
         ],
         ["Recycling programs", "Tree planting"],
-        {
-          type: "Bank Transfer",
-          value: "Account number: XXXXXXXX",
-        },
+        new PaymentMethod("2", "Bank Transfer", "Account number: XXXXXXXX"),
       ),
       new NGO(
         "3",
@@ -75,14 +75,12 @@ describe("SearchNGO", () => {
         "789 Elm Street, City",
         categories[1],
         [
-          { type: "Email", value: "info@healthaid.org" },
-          { type: "Phone", value: "555-123-4567" },
+          new Contact("5", "mail", "info@healthaid.org"),
+          new Contact("6", "phone", "555-123-4567"),
         ],
         ["Medicines", "Medical equipment"],
-        {
-          type: "Credit Card",
-          value: "Visa ending in 1234",
-        },
+
+        new PaymentMethod("3", "Credit Card", "Visa ending in 1234"),
       ),
       new NGO(
         "4",
@@ -93,14 +91,11 @@ describe("SearchNGO", () => {
         "321 Oak Road, City",
         categories[2],
         [
-          { type: "Email", value: "info@educationforall.org" },
-          { type: "Phone", value: "222-333-4444" },
+          new Contact("7", "mail", "info@educationforall.org"),
+          new Contact("8", "phone", "222-333-4444"),
         ],
         ["Books", "School furniture"],
-        {
-          type: "Cash",
-          value: "Physical donations only",
-        },
+        new PaymentMethod("4", "Cash", "Physical donations only"),
       ),
       new NGO(
         "5",
@@ -111,15 +106,15 @@ describe("SearchNGO", () => {
         "555 Pine Avenue, City",
         categories[3],
         [
-          { type: "Email", value: "info@animalrescue.org" },
-          { type: "Phone", value: "999-888-7777" },
+          new Contact("10", "mail", "info@animalrescue.org"),
+          new Contact("11", "phone", "999-888-7777"),
         ],
         ["Pet food", "Medical supplies"],
-        { type: "Venmo", value: "@animalrescue" },
+        new PaymentMethod("5", "Venmo", "@animalrescue"),
       ),
     ];
 
-    ngoRepository.NGOs = ngos;
+    await ngoRepository.saveMany(ngos);
   });
 
   test("should be paginated results of NGO", async () => {
@@ -138,17 +133,31 @@ describe("SearchNGO", () => {
     for (const ngo of output.ngos) {
       expect(ngo).toBeInstanceOf(NGO);
     }
+  });
 
-    const output2 = await searchNGO.execute({ page: 3, pageSize });
+  test("should return paginated results on different page", async () => {
+    const page = 3;
+    const pageSize = 2;
 
-    expect(output2.ngos).toHaveLength(1);
-    expect(output2.page).toBe(3);
-    expect(output2.pageSize).toBe(2);
+    const searchNGO = new SearchNGO(ngoRepository);
+
+    const output = await searchNGO.execute({ page, pageSize });
+
+    expect(output.ngos).toHaveLength(1);
+    expect(output.page).toBe(page);
+    expect(output.pageSize).toBe(pageSize);
+
+    for (const ngo of output.ngos) {
+      expect(ngo).toBeInstanceOf(NGO);
+    }
   });
 
   test("should be paginated results with category of NGO", async () => {
     const page = 1;
     const pageSize = 10;
+    const categoryFilter = categories[0];
+    const expectedNGOs = ngos.filter((ngo) => ngo.category === categoryFilter);
+
     const searchNGO = new SearchNGO(ngoRepository);
     const output = await searchNGO.execute({
       page,
@@ -156,13 +165,13 @@ describe("SearchNGO", () => {
       filter: { category: categories[0] },
     });
 
-    expect(output.ngos).toHaveLength(2);
-    expect(output.page).toBe(1);
+    expect(output.ngos).toEqual(expectedNGOs);
+    expect(output.page).toBe(page);
+    expect(output.pageSize).toBe(pageSize);
     expect(output.totalPages).toBe(1);
+  });
 
-    const [NGO1, NGO2] = output.ngos;
-
-    expect(NGO1.category).toBe(categories[0]);
-    expect(NGO2.category).toBe(categories[0]);
+  afterAll(async () => {
+    await ngoRepository.deleteMany(ngos);
   });
 });

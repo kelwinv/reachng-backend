@@ -6,7 +6,7 @@ import {
 import { NGO } from "Domains/Entities/NGO";
 
 class NGOInMemoryRepository implements NGORepository {
-  NGOs: NGO[];
+  readonly NGOs: NGO[];
 
   constructor() {
     this.NGOs = [];
@@ -31,6 +31,19 @@ class NGOInMemoryRepository implements NGORepository {
         totalNGOs: totalNGOs,
       });
     });
+  }
+
+  async deleteMany(input: NGO[]): Promise<void> {
+    for (const ngo of input) {
+      const index = this.NGOs.findIndex((item) => item.id === ngo.id);
+      if (index !== -1) {
+        this.NGOs.splice(index, 1);
+      }
+    }
+  }
+
+  async saveMany(input: NGO[]): Promise<void> {
+    this.NGOs.push(...input);
   }
 }
 
