@@ -21,4 +21,16 @@ describe("Category", () => {
     expect(category).toHaveProperty("name");
     expect(category).toHaveProperty("description");
   });
+
+  test("must be error if description is empty", () => {
+    expect(() => new Category("id", "category name", "")).toThrowError(
+      "description cannot be empty",
+    );
+  });
+
+  test("must be error if name is empty", () => {
+    expect(() => new Category("id", "", "description")).toThrowError(
+      "name cannot be empty",
+    );
+  });
 });
