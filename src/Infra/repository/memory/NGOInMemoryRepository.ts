@@ -16,9 +16,9 @@ class NGOInMemoryRepository implements NGORepository {
     const startIndex = (page - 1) * size;
     const endIndex = startIndex + size;
     let paginatedNGOs = this.NGOs.slice(startIndex, endIndex);
-    if (filter?.category) {
+    if (filter?.categoryId) {
       paginatedNGOs = paginatedNGOs.filter(
-        (ong) => ong.category.name === filter.category,
+        (ong) => ong.category.id === filter.categoryId,
       );
     }
     const totalNGOs = this.NGOs.length;
