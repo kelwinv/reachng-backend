@@ -1,4 +1,4 @@
-import { CategoryRepository } from "Application/repository/CategoryRepository";
+import { CategoryRepository } from "Domains/repository/CategoryRepository";
 import { Category } from "Domains/Entities/Category";
 
 class CategoryInMemoryRepository implements CategoryRepository {
