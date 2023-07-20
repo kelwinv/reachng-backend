@@ -1,4 +1,4 @@
-import { CategoryRepository } from "Application/repository/CategoryRepository";
+import { CategoryRepository } from "Domains/repository/CategoryRepository";
 import { CreateCategories } from "Application/useCase/CreateCategories";
 import { Category } from "Domains/Entities/Category";
 import { CategoryInMemoryRepository } from "Infra/repository/memory/CategoryInMemoryRepository";

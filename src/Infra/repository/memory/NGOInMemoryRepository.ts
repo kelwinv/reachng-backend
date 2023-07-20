@@ -2,7 +2,7 @@ import {
   NGORepository,
   paginateInput,
   paginateOutput,
-} from "Application/repository/NGORepository";
+} from "Domains/repository/NGORepository";
 import { NGO } from "Domains/Entities/NGO";
 
 class NGOInMemoryRepository implements NGORepository {
