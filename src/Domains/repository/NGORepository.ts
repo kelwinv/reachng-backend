@@ -10,7 +10,7 @@ export type paginateInput = {
   page: number;
   size: number;
   filter?: {
-    category?: string;
+    categoryId?: string;
   };
 };
 
