@@ -1,4 +1,3 @@
-import { Utils } from "Application/Utils";
 import { UUIDGenerator } from "./UUIDGenerator";
 
 class Contact {
@@ -21,7 +20,8 @@ class Contact {
 
   private static isValidFormat(type: string, value: string): void {
     if (type === "mail") {
-      if (!Utils.isEmailValidFormat(value)) {
+      const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!EMAIL_REGEX.test(value)) {
         throw new Error("Invalid mail contact value format");
       }
     }
